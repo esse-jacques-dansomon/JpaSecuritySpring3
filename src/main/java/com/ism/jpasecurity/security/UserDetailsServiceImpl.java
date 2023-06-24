@@ -1,4 +1,4 @@
-package com.ism.jpasecurity.services;
+package com.ism.jpasecurity.security;
 
 /**
  * Author  : essejacaues.co

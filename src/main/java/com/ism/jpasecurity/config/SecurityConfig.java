@@ -1,62 +1,60 @@
 package com.ism.jpasecurity.config;
 
-/**
- * Author  : essejacaues.co
- * Date    : 24/06/2023 01:55
- * Project : JpaSecurity
- */
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ism.jpasecurity.security.UserInfoUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.SecurityBuilder;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig implements WebSecurityConfigurer {
+@EnableMethodSecurity
+public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    @Bean
+    //authentication
+    public UserDetailsService userDetailsService() {
+//        UserDetails admin = User.withUsername("Basant")
+//                .password(encoder.encode("Pwd1"))
+//                .roles("ADMIN")
+//                .build();
+//        UserDetails user = User.withUsername("John")
+//                .password(encoder.encode("Pwd2"))
+//                .roles("USER","ADMIN","HR")
+//                .build();
+//        return new InMemoryUserDetailsManager(admin, user);
+        return new UserInfoUserDetailsService();
+    }
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/register").permitAll()
-////                .anyRequest().authenticated()
-//                .anyRequest().permitAll()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
-//    }
-//
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/products/welcome","/products/new").permitAll()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/products/**")
+                .authenticated().and().formLogin().and().build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    public void init(SecurityBuilder builder) throws Exception {
-
+    @Bean
+    public AuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider=new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
     }
 
-    @Override
-    public void configure(SecurityBuilder builder) throws Exception {
-
-
-    }
 }
-
