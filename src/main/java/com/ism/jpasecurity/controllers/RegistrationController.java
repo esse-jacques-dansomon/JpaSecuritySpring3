@@ -10,6 +10,7 @@ import com.ism.jpasecurity.entities.User;
 import com.ism.jpasecurity.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/register")
 @Log4j2
 public class RegistrationController {
-
-//    private UserService userService;
-
+    private  final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     public String showRegistrationForm(Model model) {
@@ -33,11 +33,13 @@ public class RegistrationController {
     }
 
     @PostMapping()
-    public void processRegistration(UserRegistrationDto user) {
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userService.save(user);
-        log.info("registration: " + user);
-       // return "redirect:/login";
+    public String processRegistration(User user) {
+        log.info("registration user: form " + user);
+        user.setEnabled(true);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User userSaved  = this.userService.createUser(user);
+        log.info("registration user: saved " + userSaved);
+        return "redirect:/login";
     }
 }
 
