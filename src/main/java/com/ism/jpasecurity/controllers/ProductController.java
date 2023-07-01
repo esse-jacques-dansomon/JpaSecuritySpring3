@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/produit")
+@RequestMapping("/product")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -33,33 +33,33 @@ public class ProductController {
     @GetMapping("/add")
     public String ajout(Model model){
         Product product = new Product();
-        model.addAttribute("produit", product);
+        model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.findAllCategories());
         return "produit.ajout";
     }
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("produit") Product product, BindingResult result){
+    public String save(@Valid @ModelAttribute("product") Product product, BindingResult result){
         if(result.hasErrors()){
             return "produit.ajout";
         }
         Category category = categoryService.findCategory(product.getCodeCat());
         product.setCategory(category);
         productService.saveProduct(product);
-        return "redirect:/produit/liste";
+        return "redirect:/product/liste";
     }
 
     @GetMapping("/supprimer/{numero}")
     public String delete(@PathVariable Integer numero){
         productService.deleteProduct(numero);
-        return "redirect:/produit/liste";
+        return "redirect:/product/liste";
     }
 
     @GetMapping("/modifier/{numero}")
     public String modifier(@PathVariable Integer numero, Model model){
         Product product = productService.findProduct(numero);
         if(product == null){
-            return "redirect:/produit/liste";
+            return "redirect:/product/liste";
         }
         model.addAttribute("produit", product);
         model.addAttribute("categories", categoryService.findAllCategories());
@@ -74,7 +74,7 @@ public class ProductController {
         Category category = categoryService.findCategory(product.getCodeCat());
         product.setCategory(category);
         productService.saveProduct(product);
-        return "redirect:/produit/liste";
+        return "redirect:/product/liste";
     }
 
     //Get products by category code
@@ -83,7 +83,7 @@ public class ProductController {
     public String listeByCategory(@RequestParam("code") String code, Model model){
         model.addAttribute("categories", categoryService.findAllCategories());
         Category category = categoryService.findCategory(code);
-        model.addAttribute("categorie", category.getLibelle());
+        model.addAttribute("category", category.getLibelle());
         model.addAttribute("liste", productService.findProductsByCategoryCode(code));
         return "categorie.produits";
     }

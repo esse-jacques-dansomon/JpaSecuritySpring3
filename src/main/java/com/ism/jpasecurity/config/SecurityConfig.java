@@ -39,7 +39,11 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests().requestMatchers( "/users/*", "/register").permitAll()
                 .and()
-                .authorizeHttpRequests().anyRequest().authenticated()
+                .authorizeHttpRequests().requestMatchers("/category/liste","/category/gestion","/product/liste","/product/gestion","/product/gestion","/product/filtered","/product/filter","/").hasAnyAuthority("ADMIN","CLIENT")
+                .and()
+                .authorizeHttpRequests().requestMatchers("/category/add","/category/save","/category/supprimer/**","/category/modifier/**","/category/update","/product/add","/product/save","/product/supprimer/**","/product/modifier/**","/product/update").hasAuthority("ADMIN")
+                .and()
+                .exceptionHandling().accessDeniedPage("/error")
                 .and().formLogin().and().build();
     }
 

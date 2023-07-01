@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/categorie")
+@RequestMapping("/category")
 public class CategoryController {
 
     @Autowired
@@ -31,30 +31,30 @@ public class CategoryController {
     @GetMapping("/add")
     public String ajout(Model model) {
         Category category = new Category();
-        model.addAttribute("categorie", category);
+        model.addAttribute("category", category);
         return "categorie.ajout";
     }
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute("categorie") Category category, BindingResult result){
+    public String save(@Valid @ModelAttribute("category") Category category, BindingResult result){
         if(result.hasErrors()){
             return "categorie.ajout";
         }
         categoryService.saveCategory(category);
-        return "redirect:/categorie/liste";
+        return "redirect:/category/liste";
     }
 
     @GetMapping("/supprimer/{code}")
     public String delete(@PathVariable("code") String code){
         categoryService.deleteCategory(code);
-        return "redirect:/categorie/liste";
+        return "redirect:/category/liste";
     }
 
     @GetMapping("/modifier/{code}")
     public String modifier(@PathVariable("code") String code, Model model){
         Category category = categoryService.findCategory(code);
         if(category == null){
-            return "redirect:/categorie/liste";
+            return "redirect:/category/liste";
         }
         model.addAttribute("categorie", category);
         return "categorie.modifier";
@@ -66,7 +66,7 @@ public class CategoryController {
             return "categorie.modifier";
         }
         categoryService.saveCategory(category);
-        return "redirect:/categorie/liste";
+        return "redirect:/category/liste";
     }
 
 }

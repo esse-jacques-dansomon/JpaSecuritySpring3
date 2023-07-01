@@ -3,6 +3,8 @@ package com.ism.jpasecurity.entities;
 import lombok.*;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +16,6 @@ import java.util.Set;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -33,5 +34,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
+
+    public User(){
+        this.roles = new HashSet<>();
+    }
+
+    public void addRole(Role role){
+        this.roles.add(role);
+    }
 
 }
