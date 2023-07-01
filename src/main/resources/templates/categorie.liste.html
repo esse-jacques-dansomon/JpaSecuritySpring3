@@ -8,12 +8,9 @@
 </head>
 </head>
 <body>
+<div id="menu" th:replace="partials/navbar"></div>
 <div class="container mt-5">
-    <a th:href="@{/category/add}" class="btn btn-primary">Ajouter catégorie</a>
-    <a th:href="@{/category/gestion}" class="btn btn-primary">Retour menu</a>
-    <a th:href="@{/}" class="btn btn-primary">Home</a>
-    <div class="row">
-        <h1>La liste des categories</h1>
+        <a th:href="@{/category/add}" class="btn btn-primary">Ajouter catégorie</a>
         <table class="table table-striped">
             <thead>
             <tr>

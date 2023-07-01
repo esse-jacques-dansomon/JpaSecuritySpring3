@@ -56,7 +56,7 @@ public class CategoryController {
         if(category == null){
             return "redirect:/category/liste";
         }
-        model.addAttribute("categorie", category);
+        model.addAttribute("category", category);
         return "categorie.modifier";
     }
 

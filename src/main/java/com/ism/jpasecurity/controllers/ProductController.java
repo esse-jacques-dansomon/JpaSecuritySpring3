@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @GetMapping("/supprimer/{numero}")
-    public String delete(@PathVariable Integer numero){
+    public String delete(@PathVariable("numero") Integer numero){
         productService.deleteProduct(numero);
         return "redirect:/product/liste";
     }
@@ -61,7 +61,7 @@ public class ProductController {
         if(product == null){
             return "redirect:/product/liste";
         }
-        model.addAttribute("produit", product);
+        model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.findAllCategories());
         return "produit.modifier";
     }

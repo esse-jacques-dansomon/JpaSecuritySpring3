@@ -8,8 +8,9 @@
 </head>
 </head>
 <body>
+<div id="menu" th:replace="partials/navbar"></div>
 <div class="container mt-5">
-  <h1>Formulaire de modification de category</h1>
+  <h1>Formulaire de modification categorie</h1>
   <div class="row mb-3">
     <form th:action="@{/category/update}" th:object="${category}" method="post">
       <div class="mb-3 col-6">
@@ -23,8 +24,6 @@
       <button type="submit" class="btn btn-primary">Modifier</button>
     </form>
   </div>
-  <a th:href="@{/category/gestion}" class="btn btn-primary">Retour menu</a>
-  <a th:href="@{/}" class="btn btn-primary">Home</a>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>

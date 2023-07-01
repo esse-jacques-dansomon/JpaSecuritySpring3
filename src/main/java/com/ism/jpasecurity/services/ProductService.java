@@ -24,6 +24,7 @@ public class ProductService {
     public void deleteProduct(Integer code){
        Optional<Product> produit = produitRepo.findById(code);
         if(produit.isPresent()){
+            produit.get().getCategory().getProductsList().remove(produit.get());
             produitRepo.deleteById(code);
         }
     }
